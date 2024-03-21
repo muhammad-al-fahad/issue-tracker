@@ -1,18 +1,13 @@
 "use client";
 
 import "easymde/dist/easymde.min.css";
+import SimpleMDE from 'react-simplemde-editor'
 import { useForm, Controller, FieldValues } from "react-hook-form";
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Issue } from "@prisma/client";
-
-const SimpleMDE = dynamic(
-  () => import('react-simplemde-editor'),
-  { ssr: false }
-)
-
 interface IssueStructure {
   title: string;
   description: string;
@@ -38,6 +33,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
         else
             await axios.post("/api/issues", data);
         router.push("/issues");
+        router.refresh();
     } catch(error){
         setLoading(false);
         setError((error as Error).message)
