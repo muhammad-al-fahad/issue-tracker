@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en" className="light">
       <body className={poppin.variable}>
         <Navbar />
-        <main className="px-5">{children}</main>
+        <main className="px-5 container">{children}</main>
       </body>
     </html>
   );
