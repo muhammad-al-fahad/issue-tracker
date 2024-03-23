@@ -45,7 +45,7 @@ const AssigneeUser = ({ id, title, description, assigneeToUserId }: Prop) => {
   }, [currentUser, isLoading]);
 
 
-  if(isLoading) return <Skeleton width='w-48' height="h-8" />
+  if(isLoading || !data) return <Skeleton width='w-48' height="h-8" />
   else if(error) return null;
   return (
       <div className="relative mt-2 w-1/3">
@@ -115,7 +115,7 @@ const AssigneeUser = ({ id, title, description, assigneeToUserId }: Prop) => {
                   </span>
                 </div>
               </li>
-            {data?.users.map((user) => (
+            {data.users.map((user) => (
               <li
                 key={user.id}
                 className="text-gray-900 relative cursor-pointer select-none py-2 pl-3 pr-9 hover:bg-cyan-600 hover:text-gray-50"
