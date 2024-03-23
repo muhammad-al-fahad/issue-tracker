@@ -11,7 +11,7 @@ const statusMap: Record<Status, { label: string, color: string}> = {
     CLOSED: { label: 'Closed', color: 'bg-green-500/15 text-green-500'}
 }
 
-const statusBadge = ({ status }: Props) => {
+const StatusBadge = ({ status }: Props) => {
     return (
         <span
             className={`${statusMap[status].color} font-normal py-1 px-2 rounded-md`}
@@ -21,4 +21,4 @@ const statusBadge = ({ status }: Props) => {
     )
 }
 
-export default statusBadge
+export default StatusBadge

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { FaDeleteLeft } from "react-icons/fa6";
-import DeleteModal from "./deleteModal";
+import DeleteModal from "./DeleteModal";
 
 const DeleteButton = ({ issueId}: {issueId: number}) => {
   const [deleteToggle, setDeleteToggle] = useState<boolean>(false);

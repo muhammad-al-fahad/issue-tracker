@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "./navbar";
+import AuthProvider from "./context/AuthProvider";
+import QueryProvider from "./context/QueryProvider";
 
 const poppin = Poppins({ subsets: ["latin"], weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'], variable: '--font-poppins' });
 
@@ -18,8 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="light">
       <body className={poppin.variable}>
-        <Navbar />
-        <main className="px-5 container">{children}</main>
+        <QueryProvider>
+          <AuthProvider>
+            <Navbar />
+            <main className="px-5 container mx-auto">{children}</main>
+          </AuthProvider>
+        </QueryProvider>
       </body>
     </html>
   );

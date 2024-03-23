@@ -1,5 +1,5 @@
 import SkeletonLoading from "../components/Skeleton";
-import IssueAction from "../components/issueAction";
+import IssueAction from "../components/IssueAction";
 
 const Loading = () => {
   const issues = [1, 2, 3, 4, 5];

@@ -6,7 +6,6 @@ import { useForm, Controller, FieldValues } from "react-hook-form";
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
 import { Issue } from "@prisma/client";
 interface IssueStructure {
   title: string;

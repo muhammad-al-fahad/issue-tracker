@@ -1,56 +1,36 @@
 import prisma from "@/prisma/client";
-import Link from "next/link";
-import StatusBadge from "../components/statusBadge";
-import IssueAction from "../components/issueAction";
+import { Status } from "@prisma/client";
+import IssueAction from "../components/IssueAction";
+import IssueTable, { columnNames, SearchParams } from "../components/IssueTable";
+import PaginateIssue from "../components/PaginateIssue";
 
-const Issues = async () => {
-  const issues = await prisma.issue.findMany();
+interface Props {
+  searchParams: SearchParams
+}
+
+const Issues = async ({ searchParams }: Props) => {
+
+  const statuses = Object.values(Status);
+  const status = statuses.includes(searchParams.status) ? searchParams.status : undefined;
+  const where = { status }
+  const orderBy = columnNames.includes(searchParams.orderBy) ? { [searchParams.orderBy] : 'asc' } : undefined
+  const page = parseInt(searchParams.page) || 1;
+  const pageSize = 10;
+
+  const issues = await prisma.issue.findMany({
+    where,
+    orderBy,
+    skip: (page - 1) * pageSize,
+    take: pageSize
+  });
+
+  const issuesCount = await prisma.issue.count({ where });
 
   return (
     <>
       <IssueAction />
-
-      <div className="max-w-screen overflow-x-auto rounded-lg my-5">
-        {issues.length === 0 ? (
-          <h1 className="text-3xl font-semibold text-gray-400/50 text-center">
-            No Issue Found
-          </h1>
-        ) : (
-          <table className="table-auto min-w-full">
-            <thead className="w-full text-sm text-left rtl:text-right text-gray-800 dark:text-gray-300">
-              <tr className="text-xs text-gray-800 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-300 border-b">
-                <th scope="col" className="px-6 py-3">
-                  Title
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Status
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Created At
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {issues.map((issue) => (
-                <tr
-                  key={issue.id}
-                  className="bg-gray-100 text-gray-800 dark:text-gray-50 border-b dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <td className="px-6 py-3 text-blue-500/80 hover:underline hover:underline-offset-4">
-                    <Link href={`/issues/${issue.id}`}>{issue.title}</Link>
-                  </td>
-                  <td className="px-6 py-3">
-                    <StatusBadge status={issue.status} />
-                  </td>
-                  <td className="px-6 py-3">
-                    {issue.createdAt.toDateString()}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+      <IssueTable issues={issues} searchParams={searchParams}/>
+      <PaginateIssue currentPage={page} itemCounts={issuesCount} pageSize={pageSize}/>
     </>
   );
 };

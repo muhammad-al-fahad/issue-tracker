@@ -1,10 +1,11 @@
-import DeleteButton from "@/app/components/deleteButton";
+import DeleteButton from "@/app/components/DeleteButton";
 import prisma from "@/prisma/client";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FaPencilAlt } from 'react-icons/fa';
 import ReactMarkdown from "react-markdown";
-import StatusBadge from "../../components/statusBadge";
+import StatusBadge from "../../components/StatusBadge";
+import AssigneeUser from "@/app/components/AssigneeUser";
 
 interface Props {
   params: { id: string };
@@ -31,6 +32,8 @@ const IssueDetail = async ({ params }: Props) => {
         </div>
       </div>
       <div className="w-full h-full p-2 flex flex-col space-y-4 justify-start items-center">
+        <AssigneeUser id={issue.id} title={issue.title} description={issue.description} assigneeToUserId={issue.assigneeToUserId}/>
+        
         <button type="button" className="outline-none border-none py-2 px-4 rounded-md bg-cyan-600 text-gray-50">
           <Link href={`/issues/${issue.id}/edit`} className="flex space-x-4 items-center">
             <FaPencilAlt className="text-white"/>
