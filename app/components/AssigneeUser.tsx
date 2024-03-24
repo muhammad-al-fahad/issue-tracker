@@ -4,7 +4,7 @@ import { Issue, User } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Image from "next/image";
-import { Dispatch, RefObject, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, RefObject, SetStateAction, useRef, useState } from "react";
 import { FaUser } from "react-icons/fa6";
 import Skeleton from "./Skeleton";
 import { useRouter } from "next/navigation";
@@ -16,10 +16,6 @@ interface Prop {
 const AssigneeUser = ({ issue }: Prop) => {
   const { data: users, isLoading, error } = useUser();
   const currentUser = users?.find((user) => user.id === issue.assigneeToUserId);
-
-  useEffect(() => {
-    localStorage.setItem("users", JSON.stringify(users));
-  }, [users])
 
   const [assignTo, setAssignTo] = useState<User | null>(null);
   const [assignToggle, setAssignToggle] = useState<boolean>(false);
