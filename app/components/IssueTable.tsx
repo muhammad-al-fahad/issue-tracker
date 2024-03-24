@@ -37,7 +37,7 @@ const IssueTable = ({ searchParams, issues }: Props) => {
         No Issue Found
       </h1>
     ) : (
-      <table className="table-auto min-w-full">
+      <table className="table-fixed min-w-full">
         <thead className="w-full text-sm text-left rtl:text-right text-gray-800 dark:text-gray-300">
           <tr className="text-xs text-gray-800 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-300 border-b">
             {

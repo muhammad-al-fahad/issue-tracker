@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface PaginateProps {
   itemCounts: number;
@@ -16,10 +16,14 @@ const PaginateIssue = ({
   const pageCount = Math.ceil(itemCounts / pageSize);
   const pageNumbers = Array.from({ length: pageCount }, (_, i) => i + 1);
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   const handleChange = (page: number) => {
     const params = new URLSearchParams()
+    if(searchParams.get('status')) params.append('status', searchParams.get('status')!)
+    if(searchParams.get('orderBy')) params.append('orderBy', searchParams.get('orderBy')!)
     params.set("page", page.toString())
+  
     router.push("?" + params.toString())
   }
 
@@ -27,7 +31,7 @@ const PaginateIssue = ({
   return (
     <div className="flex items-center justify-end border-gray-200 bg-white py-2">
       <nav
-        className="isolate inline-flex -space-x-px rounded-md shadow-sm"
+        className="isolate inline-flex -space-x-px rounded-md shadow-sm max-w-[300px] sm:max-w-full overflow-auto"
         aria-label="Pagination"
       >
         <button

@@ -26,7 +26,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="flex h-14 items-center px-5 mb-5 shadow-md shadow-gray-300/75 container justify-between mx-auto">
+    <nav className="flex h-14 items-center px-2 md:px-5 mb-5 shadow-md shadow-gray-300/75 container justify-between mx-auto">
       <div className="flex items-center space-x-6">
         <Link href="/">
           <AiFillBug />

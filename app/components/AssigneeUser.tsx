@@ -4,9 +4,10 @@ import { User } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Image from "next/image";
-import { Dispatch, RefObject, SetStateAction, use, useEffect, useRef, useState } from "react";
+import { Dispatch, RefObject, SetStateAction, useEffect, useRef, useState } from "react";
 import { FaUser } from "react-icons/fa6";
 import Skeleton from "./Skeleton";
+import { useRouter } from "next/navigation";
 
 interface Prop {
   id: number
@@ -15,17 +16,15 @@ interface Prop {
   assigneeToUserId: string | null
 }
 
-interface Result {
-  users: User[]
-}
 const AssigneeUser = ({ id, title, description, assigneeToUserId }: Prop) => {
-  const { data, isLoading, error } = useUser();
-  const currentUser = data?.users.find((user) => user.id === assigneeToUserId);
+  const { data: users, isLoading, error } = useUser();
+  const currentUser = users?.find((user) => user.id === assigneeToUserId);
 
   const [assignTo, setAssignTo] = useState<User | null>(null);
   const [assignToggle, setAssignToggle] = useState<boolean>(false);
   const childRef = useRef<HTMLUListElement>(null);
   const parentRef = useRef<HTMLButtonElement>(null);
+  const router = useRouter()
 
   useOutsideEvent<HTMLUListElement, HTMLButtonElement>(childRef, setAssignToggle, parentRef);
   
@@ -36,8 +35,9 @@ const AssigneeUser = ({ id, title, description, assigneeToUserId }: Prop) => {
     axios.patch(`/api/issues/${id}`, {
       title,
       description,
-      assigneeToUserId: user?.id || null
+      assigneeToUserId: user?.id
     });
+    router.refresh()
   };
 
   useEffect(() => {
@@ -45,10 +45,10 @@ const AssigneeUser = ({ id, title, description, assigneeToUserId }: Prop) => {
   }, [currentUser, isLoading]);
 
 
-  if(isLoading || !data) return <Skeleton width='w-48' height="h-8" />
+  if(isLoading || !users) return <Skeleton width='w-48' height="h-8" />
   else if(error) return null;
   return (
-      <div className="relative mt-2 w-1/3">
+      <div className="relative mt-2 w-2/3 md:w-1/3">
         <button
           ref={parentRef}
           type="button"
@@ -115,7 +115,7 @@ const AssigneeUser = ({ id, title, description, assigneeToUserId }: Prop) => {
                   </span>
                 </div>
               </li>
-            {data.users.map((user) => (
+            {users.map((user) => (
               <li
                 key={user.id}
                 className="text-gray-900 relative cursor-pointer select-none py-2 pl-3 pr-9 hover:bg-cyan-600 hover:text-gray-50"
@@ -144,7 +144,7 @@ const AssigneeUser = ({ id, title, description, assigneeToUserId }: Prop) => {
   );
 };
 
-const useUser = () => useQuery<Result>({
+const useUser = () => useQuery<User[]>({
   queryKey: ["users"],
   queryFn: () => axios.get("/api/users").then((res) => res.data),
   staleTime: 60 * 1000,

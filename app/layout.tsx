@@ -23,7 +23,7 @@ export default function RootLayout({
         <QueryProvider>
           <AuthProvider>
             <Navbar />
-            <main className="px-5 container mx-auto">{children}</main>
+            <main className="px-2 md:px-5 container mx-auto">{children}</main>
           </AuthProvider>
         </QueryProvider>
       </body>
