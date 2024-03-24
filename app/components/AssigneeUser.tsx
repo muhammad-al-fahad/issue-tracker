@@ -4,7 +4,7 @@ import { Issue, User } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Image from "next/image";
-import { Dispatch, RefObject, SetStateAction, useRef, useState } from "react";
+import { Dispatch, RefObject, SetStateAction, useEffect, useRef, useState } from "react";
 import { FaUser } from "react-icons/fa6";
 import Skeleton from "./Skeleton";
 import { useRouter } from "next/navigation";
