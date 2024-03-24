@@ -32,7 +32,7 @@ const AssigneeUser = ({ issue }: Prop) => {
     axios.patch(`/api/issues/${issue.id}`, {
       title: issue.title,
       description: issue.description,
-      assigneeToUserId: user?.id || issue.assigneeToUserId
+      assigneeToUserId: user?.id || null
     });
     router.refresh()
   };
