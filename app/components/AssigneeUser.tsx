@@ -17,6 +17,10 @@ const AssigneeUser = ({ issue }: Prop) => {
   const { data: users, isLoading, error } = useUser();
   const currentUser = users?.find((user) => user.id === issue.assigneeToUserId);
 
+  useEffect(() => {
+    localStorage.setItem("users", JSON.stringify(users));
+  }, [users])
+
   const [assignTo, setAssignTo] = useState<User | null>(null);
   const [assignToggle, setAssignToggle] = useState<boolean>(false);
   const childRef = useRef<HTMLUListElement>(null);
