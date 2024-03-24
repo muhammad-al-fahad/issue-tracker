@@ -1,6 +1,6 @@
 "use client";
 
-import { User } from "@prisma/client";
+import { Issue, User } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Image from "next/image";
@@ -10,15 +10,12 @@ import Skeleton from "./Skeleton";
 import { useRouter } from "next/navigation";
 
 interface Prop {
-  id: number
-  title: string
-  description: string,
-  assigneeToUserId: string | null
+  issue: Issue
 }
 
-const AssigneeUser = ({ id, title, description, assigneeToUserId }: Prop) => {
+const AssigneeUser = ({ issue }: Prop) => {
   const { data: users, isLoading, error } = useUser();
-  const currentUser = users?.find((user) => user.id === assigneeToUserId);
+  const currentUser = users?.find((user) => user.id === issue.assigneeToUserId);
 
   const [assignTo, setAssignTo] = useState<User | null>(null);
   const [assignToggle, setAssignToggle] = useState<boolean>(false);
@@ -32,9 +29,9 @@ const AssigneeUser = ({ id, title, description, assigneeToUserId }: Prop) => {
     setAssignTo(user);
     setAssignToggle(false);
     
-    axios.patch(`/api/issues/${id}`, {
-      title,
-      description,
+    axios.patch(`/api/issues/${issue.id}`, {
+      title: issue.title,
+      description: issue.description,
       assigneeToUserId: user?.id
     });
     router.refresh()

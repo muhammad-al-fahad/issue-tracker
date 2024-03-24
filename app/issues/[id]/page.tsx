@@ -32,7 +32,7 @@ const IssueDetail = async ({ params }: Props) => {
         </div>
       </div>
       <div className="w-full h-full p-2 flex flex-col space-y-4 justify-start items-center">
-        <AssigneeUser id={issue.id} title={issue.title} description={issue.description} assigneeToUserId={issue.assigneeToUserId}/>
+        <AssigneeUser issue={issue}/>
         
         <button type="button" className="outline-none border-none py-2 px-4 rounded-md bg-cyan-600 text-gray-50">
           <Link href={`/issues/${issue.id}/edit`} className="flex space-x-4 items-center">
