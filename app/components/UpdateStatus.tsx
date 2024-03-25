@@ -4,7 +4,6 @@ import { Issue, Status } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Dispatch, RefObject, SetStateAction, useEffect, useRef, useState } from "react";
-import { set } from "react-hook-form";
 
 interface Upadted {
   label: string;
@@ -19,7 +18,7 @@ const UpdatedStatus = ({ issue }: { issue: Issue }) => {
   ]
   const currentStatus = status.find((s) => s.value === issue.status);
 
-  const [filterBy, setFilterBy] = useState<string>("Open");
+  const [statusBy, setStatusBy] = useState<string>("Open");
   const [statusToggle, setStatusToggle] = useState<boolean>(false);
   const childRef = useRef<HTMLUListElement>(null);
   const parentRef = useRef<HTMLButtonElement>(null);
@@ -28,7 +27,7 @@ const UpdatedStatus = ({ issue }: { issue: Issue }) => {
   useOutsideEvent<HTMLUListElement, HTMLButtonElement>(childRef, setStatusToggle, parentRef);
   
   const handleChange = (status: Upadted) => {
-    setFilterBy(status.label);
+    setStatusBy(status.label);
     setStatusToggle(false);
     
     axios.patch(`/api/issues/${issue.id}`, {
@@ -39,6 +38,10 @@ const UpdatedStatus = ({ issue }: { issue: Issue }) => {
     });
     router.refresh()
   };
+
+  useEffect(() => {
+    setStatusBy(currentStatus?.label || "Open");
+  }, [currentStatus]);
 
   return (
       <div className="relative mt-2 w-40">
@@ -51,11 +54,11 @@ const UpdatedStatus = ({ issue }: { issue: Issue }) => {
           aria-labelledby="listbox-label"
           onClick={() => {
             setStatusToggle(!statusToggle)
-            setFilterBy(currentStatus?.label || "Open")
+            setStatusBy(currentStatus?.label || "Open")
           }}
         >
         <span className="ml-3 block truncate">
-            {filterBy}
+            {statusBy}
         </span>
           <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
             <svg
@@ -88,7 +91,7 @@ const UpdatedStatus = ({ issue }: { issue: Issue }) => {
                 className="text-gray-900 relative cursor-pointer select-none py-2 pl-3 pr-9 hover:bg-cyan-600 hover:text-gray-50"
                 id="listbox-option-0"
                 role="option"
-                aria-selected={filterBy === s.label}
+                aria-selected={statusBy === s.label}
                 onClick={() => handleChange(s)}
               >
                 <span className="font-normal ml-3 block truncate">
