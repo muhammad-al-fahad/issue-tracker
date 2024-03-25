@@ -49,7 +49,7 @@ const Navbar = () => {
       {status === "unauthenticated" && (
         <button
           className="outline-none border-none rounded-md py-1 px-2 bg-cyan-500 hover:bg-cyan-600 transition-colors duration-200 ease-in-out text-gray-50"
-          onClick={() => signIn()}
+          onClick={() => signIn('google', { callbackUrl: currentPathname})}
         >
           Login
         </button>

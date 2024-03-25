@@ -6,19 +6,9 @@ import processData from '../utils/processing';
 import { useEffect, useState } from 'react';
 
 const AreaChart = ({ issues }: { issues: Issue[]}) => {
-  const [currentData, setCurrentData] = useState<{ date: string; OPEN: number; IN_PROGRESS: number; CLOSED: number }[]>([]);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentData(processData(issues));
-        }, 86_400_000);
-
-        return () => clearInterval(interval);
-    }, [issues]);
-
   return (
     <ResponsiveContainer width="100%" height={400}>
-      <Chart data={currentData}>
+      <Chart data={processData(issues)}>
         <XAxis dataKey="date" />
         <YAxis />
         <Tooltip />
