@@ -6,8 +6,11 @@ import { Area, AreaChart as Chart, Legend, ResponsiveContainer, Tooltip, XAxis, 
 const AreaChart = ({ issues }: { issues: Issue[]}) => {
   const processData = (): { date: string; OPEN: number; IN_PROGRESS: number; CLOSED: number }[] => {
     const dateCountsMap = new Map<string, { [status: string]: number }>();
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    const filteredIssues = issues.filter(issue => new Date(issue.createdAt) >= sevenDaysAgo);
 
-    issues.forEach(issue => {
+    filteredIssues.forEach(issue => {
         const createdAt = new Date(issue.createdAt);
         const dateKey = createdAt.toISOString().split('T')[0];
         
