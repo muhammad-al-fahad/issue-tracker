@@ -36,7 +36,8 @@ export async function PATCH(req: NextRequest, { params }: Prop) {
         data: {
             title: body.title,
             description: body.description,
-            assigneeToUserId: body.assigneeToUserId
+            assigneeToUserId: body.assigneeToUserId,
+            status: body.status
         }
     })
 

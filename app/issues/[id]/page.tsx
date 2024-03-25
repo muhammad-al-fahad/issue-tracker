@@ -6,6 +6,7 @@ import { FaPencilAlt } from 'react-icons/fa';
 import ReactMarkdown from "react-markdown";
 import StatusBadge from "../../components/StatusBadge";
 import AssigneeUser from "@/app/components/AssigneeUser";
+import UpdatedStatus from "@/app/components/UpdateStatus";
 
 interface Props {
   params: { id: string };
@@ -33,6 +34,7 @@ const IssueDetail = async ({ params }: Props) => {
       </div>
       <div className="w-full h-full p-2 flex flex-col space-y-4 justify-start items-center">
         <AssigneeUser issue={issue}/>
+        <UpdatedStatus issue={issue}/>
         
         <button type="button" className="outline-none border-none py-2 px-4 rounded-md bg-cyan-600 text-gray-50">
           <Link href={`/issues/${issue.id}/edit`} className="flex space-x-4 items-center">

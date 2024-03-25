@@ -18,9 +18,11 @@ const processData = (issues: Issue[]): { date: string; OPEN: number; IN_PROGRESS
 
         if (issue.status === 'OPEN') {
             dateCountsMap.get(dateKey)!.OPEN++;
-        } else {
-            if (updatedAt >= createdAt) {
+        } else if(updatedAt >= createdAt){
+            if (issue.status === 'CLOSED') {
                 dateCountsMap.get(dateKeyUpdated)!.CLOSED++;
+            } 
+            else {
                 dateCountsMap.get(dateKeyUpdated)!.IN_PROGRESS++;
             }
         }
