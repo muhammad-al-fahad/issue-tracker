@@ -40,7 +40,7 @@ const UpdatedStatus = ({ issue }: { issue: Issue }) => {
   };
 
   useEffect(() => {
-    setStatusBy(currentStatus?.label || "Open");
+    setStatusBy(currentStatus?.label!);
   }, [currentStatus]);
 
   return (
