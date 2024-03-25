@@ -18,7 +18,7 @@ const UpdatedStatus = ({ issue }: { issue: Issue }) => {
   ]
   const currentStatus = status.find((s) => s.value === issue.status);
 
-  const [statusBy, setStatusBy] = useState<string>("Open");
+  const [statusBy, setStatusBy] = useState<string>(currentStatus?.label || "Open");
   const [statusToggle, setStatusToggle] = useState<boolean>(false);
   const childRef = useRef<HTMLUListElement>(null);
   const parentRef = useRef<HTMLButtonElement>(null);
@@ -26,11 +26,11 @@ const UpdatedStatus = ({ issue }: { issue: Issue }) => {
 
   useOutsideEvent<HTMLUListElement, HTMLButtonElement>(childRef, setStatusToggle, parentRef);
   
-  const handleChange = (status: Upadted) => {
+  const handleChange = async (status: Upadted) => {
     setStatusBy(status.label);
     setStatusToggle(false);
     
-    axios.patch(`/api/issues/${issue.id}`, {
+    await axios.patch(`/api/issues/${issue.id}`, {
       title: issue.title,
       description: issue.description,
       assigneeToUserId: issue.assigneeToUserId,
@@ -38,10 +38,6 @@ const UpdatedStatus = ({ issue }: { issue: Issue }) => {
     });
     router.refresh()
   };
-
-  useEffect(() => {
-    setStatusBy(currentStatus?.label || "Open");
-  }, [currentStatus]);
 
   return (
       <div className="relative mt-2 w-40">

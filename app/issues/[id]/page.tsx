@@ -49,4 +49,5 @@ const IssueDetail = async ({ params }: Props) => {
   );
 };
 
+export const dynamic = 'force-dynamic';
 export default IssueDetail;
