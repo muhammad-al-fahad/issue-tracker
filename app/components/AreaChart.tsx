@@ -2,37 +2,23 @@
 
 import { Issue } from '@prisma/client';
 import { Area, AreaChart as Chart, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import processData from '../utils/processing';
+import { useEffect, useState } from 'react';
 
 const AreaChart = ({ issues }: { issues: Issue[]}) => {
-  const processData = (): { date: string; OPEN: number; IN_PROGRESS: number; CLOSED: number }[] => {
-    const dateCountsMap = new Map<string, { [status: string]: number }>();
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-    const filteredIssues = issues.filter(issue => new Date(issue.createdAt) >= sevenDaysAgo);
+  const [currentData, setCurrentData] = useState<{ date: string; OPEN: number; IN_PROGRESS: number; CLOSED: number }[]>([]);
 
-    filteredIssues.forEach(issue => {
-        const createdAt = new Date(issue.createdAt);
-        const dateKey = createdAt.toISOString().split('T')[0];
-        
-        if (!dateCountsMap.has(dateKey)) {
-            dateCountsMap.set(dateKey, { OPEN: 0, IN_PROGRESS: 0, CLOSED: 0 });
-        }
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentData(processData(issues));
+        }, 86400000);
 
-        const status = issue.status;
-        dateCountsMap.get(dateKey)![status]++;
-    });
-
-    return Array.from(dateCountsMap).map(([date, counts]) => ({
-        date,
-        OPEN: counts.OPEN || 0,
-        IN_PROGRESS: counts.IN_PROGRESS || 0,
-        CLOSED: counts.CLOSED || 0,
-    }));
-};
+        return () => clearInterval(interval);
+    }, [issues]);
 
   return (
     <ResponsiveContainer width="100%" height={400}>
-      <Chart data={processData()}>
+      <Chart data={currentData}>
         <XAxis dataKey="date" />
         <YAxis />
         <Tooltip />
