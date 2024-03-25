@@ -11,7 +11,7 @@ const AreaChart = ({ issues }: { issues: Issue[]}) => {
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentData(processData(issues));
-        }, 86400000);
+        }, 86_400_000);
 
         return () => clearInterval(interval);
     }, [issues]);
