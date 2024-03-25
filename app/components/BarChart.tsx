@@ -6,12 +6,12 @@ import {
   YAxis,
   ResponsiveContainer,
   Bar,
-  BarChart,
+  BarChart as Chart,
   Tooltip,
 } from "recharts";
 import { Props } from "./IssueSummary";
 
-export default function IssueChart({ open, in_progress, closed }: Props) {
+export default function BarChart({ open, in_progress, closed }: Props) {
   const data: { label: string; value: number }[] = [
     { label: "Open", value: open },
     { label: "In Progress", value: in_progress },
@@ -19,7 +19,7 @@ export default function IssueChart({ open, in_progress, closed }: Props) {
   ];
   return (
     <ResponsiveContainer width="100%" height={300}>
-      <BarChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+      <Chart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
         <defs>
           <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
@@ -37,7 +37,7 @@ export default function IssueChart({ open, in_progress, closed }: Props) {
           fill="url(#color)"
           barSize={60}
         />
-      </BarChart>
+      </Chart>
     </ResponsiveContainer>
   );
 }
